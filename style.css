@@ -1,4 +1,4 @@
-/* 🌸 Reset and base setup */
+/* Basic resets */
 *,
 *::before,
 *::after {
@@ -26,17 +26,16 @@ body {
   flex-direction: column;
   align-items: center;
   background: linear-gradient(160deg, var(--bg1), var(--bg2), var(--bg3));
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
   transition: background 3s ease;
 }
 
-/* When not loaded - pause animations */
+/* hide until loaded */
 body.not-loaded * {
   animation-play-state: paused !important;
 }
 
-/* 🌃 Night overlay */
+/* night overlay */
 .night {
   position: fixed;
   top: 0;
@@ -50,7 +49,7 @@ body.not-loaded * {
   z-index: 0;
 }
 
-/* 🌸 Flowers */
+/* flowers container */
 .flowers {
   position: relative;
   width: 100%;
@@ -61,7 +60,7 @@ body.not-loaded * {
   pointer-events: none;
 }
 
-/* Base flower positioning */
+/* base flower */
 .flower {
   position: absolute;
   bottom: 5vmin;
@@ -70,7 +69,7 @@ body.not-loaded * {
   transform-origin: bottom center;
 }
 
-/* Positions & swaying */
+/* positions & sway */
 .flower--1 {
   left: 10%;
   animation: sway1 6s linear infinite;
@@ -87,7 +86,7 @@ body.not-loaded * {
   animation: sway3 6s linear infinite;
 }
 
-/* Petal cluster */
+/* leaf cluster wrapper */
 .flower__leafs {
   position: absolute;
   bottom: 0;
@@ -98,6 +97,7 @@ body.not-loaded * {
   animation: bloom 2s backwards;
 }
 
+/* blur halo behind petals */
 .flower__leafs::after {
   content: "";
   position: absolute;
@@ -112,7 +112,7 @@ body.not-loaded * {
   transition: background 2s ease;
 }
 
-/* 🌺 Petals */
+/* petals */
 .flower__leaf {
   position: absolute;
   bottom: 0;
@@ -127,6 +127,7 @@ body.not-loaded * {
   transition: background 2s ease;
 }
 
+/* petals arrangement */
 .flower__leaf--1 {
   transform: translate(-10%, 1%) rotateY(40deg) rotateX(-50deg) rotate(-10deg);
 }
@@ -149,7 +150,7 @@ body.not-loaded * {
   opacity: 0.9;
 }
 
-/* 🌼 Flower center */
+/* white center disk */
 .flower__white-circle {
   position: absolute;
   left: 50%;
@@ -174,7 +175,7 @@ body.not-loaded * {
   transition: background 2s ease;
 }
 
-/* 🌟 Floating lights */
+/* lights (particles) */
 .flower__light {
   position: absolute;
   bottom: 0;
@@ -187,16 +188,47 @@ body.not-loaded * {
   animation: lightAnim 4s linear infinite;
 }
 
-.flower__light--1 { left: -2vmin; animation-delay: 1s; }
-.flower__light--2 { left: 3vmin; animation-delay: 0.5s; }
-.flower__light--3 { left: -6vmin; animation-delay: 0.3s; }
-.flower__light--4 { left: 6vmin; animation-delay: 0.9s; }
-.flower__light--5 { left: -1vmin; animation-delay: 1.5s; }
-.flower__light--6 { left: -4vmin; animation-delay: 3s; }
-.flower__light--7 { left: 3vmin; animation-delay: 2s; }
-.flower__light--8 { left: -6vmin; animation-delay: 3.5s; }
+.flower__light--1 {
+  left: -2vmin;
+  animation-delay: 1s;
+}
 
-/* 🌿 Stem */
+.flower__light--2 {
+  left: 3vmin;
+  animation-delay: 0.5s;
+}
+
+.flower__light--3 {
+  left: -6vmin;
+  animation-delay: 0.3s;
+}
+
+.flower__light--4 {
+  left: 6vmin;
+  animation-delay: 0.9s;
+}
+
+.flower__light--5 {
+  left: -1vmin;
+  animation-delay: 1.5s;
+}
+
+.flower__light--6 {
+  left: -4vmin;
+  animation-delay: 3s;
+}
+
+.flower__light--7 {
+  left: 3vmin;
+  animation-delay: 2s;
+}
+
+.flower__light--8 {
+  left: -6vmin;
+  animation-delay: 3.5s;
+}
+
+/* stem */
 .flower__line {
   position: absolute;
   left: 50%;
@@ -204,12 +236,12 @@ body.not-loaded * {
   transform: translateX(-50%);
   width: 1.5vmin;
   height: 55vmin;
-  background-image: linear-gradient(to top, #39c6d6, #14757a);
+  background-image: linear-gradient(to left, rgba(0, 0, 0, 0.15), transparent, rgba(255, 255, 255, 0.12)), linear-gradient(to top, transparent 10%, #14757a, #39c6d6);
   box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.4);
   animation: growStem 4s backwards;
 }
 
-/* 🌿 Stem leaves */
+/* line leaves */
 .flower__line__leaf {
   position: absolute;
   width: 7vmin;
@@ -221,55 +253,159 @@ body.not-loaded * {
   background-image: linear-gradient(to top, rgba(20, 117, 122, 0.4), #39c6d6);
 }
 
-.flower__line__leaf--2 { top: 45%; }
+.flower__line__leaf--2 {
+  top: 45%;
+}
+
 .flower__line__leaf--3 {
   left: -460%;
   top: 12%;
   transform: rotate(-70deg) rotateY(30deg);
 }
+
 .flower__line__leaf--4 {
   left: -460%;
   top: 40%;
   transform: rotate(-70deg) rotateY(30deg);
 }
-.flower__line__leaf--5 { top: 0; transform-origin: left; transform: rotate(70deg) rotateY(30deg) scale(0.6); }
-.flower__line__leaf--6 { left: -450%; top: -2%; transform-origin: right; transform: rotate(-70deg) rotateY(30deg) scale(0.6); }
 
-/* 🌈 Keyframes */
+.flower__line__leaf--5 {
+  top: 0;
+  transform-origin: left;
+  transform: rotate(70deg) rotateY(30deg) scale(0.6);
+}
+
+.flower__line__leaf--6 {
+  left: -450%;
+  top: -2%;
+  transform-origin: right;
+  transform: rotate(-70deg) rotateY(30deg) scale(0.6);
+}
+
+/* simplified grass and stems */
+.flower__g-long {
+  position: absolute;
+  bottom: 10vmin;
+  left: 6vmin;
+  transform: rotate(-30deg) rotateY(-20deg);
+  width: 40px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.flower__g-long__top {
+  width: 10px;
+  height: 20px;
+  border-right: 0.7vmin solid #159faa;
+}
+
+.flower__g-long__bottom {
+  width: 2vmin;
+  height: 50vmin;
+  background-image: linear-gradient(to top, transparent, #159faa);
+}
+
+.flower__grass {
+  position: absolute;
+  bottom: 0;
+  left: 8vmin;
+  transform: rotate(-48deg) rotateY(40deg);
+  width: 160px;
+  height: 80px;
+}
+
+.flower__grass--top {
+  width: 7vmin;
+  height: 10vmin;
+  border-top-right-radius: 100%;
+  border-right: 1.5vmin solid #159faa;
+  transform: rotate(-2deg);
+}
+
+.flower__grass--bottom {
+  width: 1.5vmin;
+  height: 25vmin;
+  background-image: linear-gradient(to top, transparent, #159faa);
+}
+
+.flower__grass__overlay {
+  position: absolute;
+  top: -10%;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.08);
+  filter: blur(1vmin);
+}
+
+/* keyframes */
 @keyframes lightAnim {
-  0% { opacity: 0; transform: translateY(0); }
-  25% { opacity: 1; transform: translateY(-5vmin) translateX(-2vmin); }
-  50% { opacity: 1; transform: translateY(-15vmin) translateX(2vmin); }
-  75% { transform: translateY(-20vmin) translateX(-2vmin); }
-  100% { transform: translateY(-30vmin); opacity: 0; }
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(-5vmin) translateX(-2vmin);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-15vmin) translateX(2vmin);
+    filter: blur(0.2vmin);
+  }
+  75% {
+    transform: translateY(-20vmin) translateX(-2vmin);
+    filter: blur(0.2vmin);
+  }
+  100% {
+    transform: translateY(-30vmin);
+    opacity: 0;
+    filter: blur(1vmin);
+  }
 }
-
 @keyframes growStem {
-  0% { height: 0; }
-  100% { height: 55vmin; }
+  0% {
+    height: 0;
+  }
+  100% {
+    height: 55vmin;
+  }
 }
-
 @keyframes bloom {
-  0% { transform: scale(0); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
-
 @keyframes sway1 {
-  0%, 100% { transform: rotate(2deg); }
-  50% { transform: rotate(-2deg); }
+  0%, 100% {
+    transform: rotate(2deg);
+  }
+  50% {
+    transform: rotate(-2deg);
+  }
 }
-
 @keyframes sway2 {
-  0%, 100% { transform: rotate(18deg); }
-  50% { transform: rotate(14deg); }
+  0%, 100% {
+    transform: rotate(18deg);
+  }
+  50% {
+    transform: rotate(14deg);
+  }
 }
-
 @keyframes sway3 {
-  0%, 100% { transform: rotate(-18deg); }
-  50% { transform: rotate(-20deg) rotateY(-10deg); }
+  0%, 100% {
+    transform: rotate(-18deg);
+  }
+  50% {
+    transform: rotate(-20deg) rotateY(-10deg);
+  }
 }
-
-/* 💬 Message and songs */
+/* content & layout */
 .content {
   width: 100%;
   max-width: 900px;
@@ -308,8 +444,13 @@ body.not-loaded * {
   height: 100px;
   border-radius: 14px;
   border: 0;
-  background: rgba(255, 255, 255, 0.02);
   transition: box-shadow 0.4s ease, transform 0.3s ease;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.songs iframe.playing {
+  box-shadow: 0 0 30px 10px rgba(255, 200, 255, 0.12);
+  transform: scale(1.02);
 }
 
 .footer {
@@ -322,7 +463,16 @@ body.not-loaded * {
   text-shadow: 0 0 10px #fff0f5;
 }
 
-/* 💖 Responsive */
+/* transitions for variables */
+.flower__leaf, .flower__leafs::after, .flower__white-circle::after {
+  transition: background 2s ease, filter 2s ease;
+}
+
+.flowers {
+  transition: filter 2s ease;
+}
+
+/* responsive tweaks */
 @media (max-width: 520px) {
   .songs iframe {
     width: 90%;
