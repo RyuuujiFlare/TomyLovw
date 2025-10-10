@@ -69,7 +69,7 @@
     100% { transform: scale(1) translateY(0); }
 }
 
-/* NEW: Stem pulse animation */
+/* Stem pulse animation */
 @keyframes stemPulse {
     0%, 100% { box-shadow: 0 0 1vmin var(--fl-light-glow); }
     50% { box-shadow: 0 0 2vmin var(--fl-light-glow); }
@@ -165,7 +165,7 @@ body {
     height: 28vmin;
     background: linear-gradient(to top, var(--fl-stem-base), var(--fl-stem-tip));
     border-radius: 1vmin;
-    /* Added pulsing animation */
+    /* Retained pulsing animation */
     animation: stemPulse 5s ease-in-out infinite; 
 }
 
@@ -254,6 +254,19 @@ body {
 }
 .leaf--left { transform: rotate(-20deg) translateX(-5vmin) scaleX(0.8); }
 .leaf--right { transform: rotate(20deg) translateX(5vmin) scaleX(0.8); }
+
+/* NEW: Style for the Play Prompt */
+.play-prompt {
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    text-shadow: 0 0 5px var(--fl-light-glow);
+    /* Reuse the pulse animation for emphasis */
+    animation: stemPulse 3s ease-in-out infinite; 
+    pointer-events: none; /* So it doesn't block clicks */
+    z-index: 16;
+}
 
 /* 💌 Letter + song */
 .content-overlay {
@@ -371,9 +384,12 @@ body {
 </div>
 <div class="content-overlay">
     <div class="letter-placement-wrapper">
+        <div class="play-prompt">
+            (Hit the play button below! 🎧)
+        </div>
         <div class="song-player-container">
             <iframe scrolling="no" frameborder="no" allow="autoplay"
-            src="https://soundcloud.com/kagyo/through-the-years-by-kenny-rogers?si=dca45873cbe54d5ab3ce8c806a31856e&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing"></iframe>
+            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1258607149&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false"></iframe>
         </div>
         <div class="letter-box">
             <p>Baby ko, happy anniversary 💞<br>
