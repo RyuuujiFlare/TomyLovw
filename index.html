@@ -1,105 +1,407 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To My Ky 💞</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Anniversary with Blooming Glow</title>
+<style>
+/* --- BASE STYLES --- */
+*, *::before, *::after {
+    margin: 0; padding: 0; box-sizing: border-box;
+}
+
+:root {
+    --dark-color: #000;
+    --fl-petal-white: #e8f9ff;
+    --fl-petal-blue: #70b3ff;
+    --fl-light-glow: #6bf0ff;
+    --fl-stem-base: #14757a;
+    --fl-stem-tip: #39c6d6;
+    --text-glow-color: #ff9fc1;
+    --grass-glow: #6bf0ff;
+    --grass-base-color: #106050;
+    --fl-stem-leaf-shadow: rgba(57, 198, 214, 0.4);
+}
+
+@keyframes flowerColorChange {
+    0%, 100% {
+        --fl-petal-blue: #70b3ff;
+        --fl-light-glow: #6bf0ff;
+        --fl-stem-tip: #39c6d6;
+        --grass-glow: #6bf0ff;
+    }
+    25% {
+        --fl-petal-blue: #ff99c4;
+        --fl-light-glow: #ff75a0;
+        --fl-stem-tip: #ff99c4;
+        --grass-glow: #ff75a0;
+    }
+    50% {
+        --fl-petal-blue: #c080ff;
+        --fl-light-glow: #e0b0ff;
+        --fl-stem-tip: #c080ff;
+        --grass-glow: #e0b0ff;
+    }
+    75% {
+        --fl-petal-blue: #5c9eff;
+        --fl-light-glow: #7bbdff;
+        --fl-stem-tip: #5c9eff;
+        --grass-glow: #7bbdff;
+    }
+}
+
+/* --- MOTION KEYFRAMES --- */
+@keyframes sway {
+    0% { transform: rotate(calc(var(--bend) * -1)) translateY(0); }
+    50% { transform: rotate(calc(var(--bend) * 1)) translateY(-0.5vh); } 
+    100% { transform: rotate(calc(var(--bend) * -1)) translateY(0); }
+}
+
+@keyframes swayFlower {
+    0% { transform: rotateZ(-0.5deg); }
+    50% { transform: rotateZ(0.5deg); }
+    100% { transform: rotateZ(-0.5deg); }
+}
+
+@keyframes bloom {
+    0% { transform: scale(0) translateY(20px); opacity: 0; }
+    70% { transform: scale(1.05) translateY(0); opacity: 1; }
+    100% { transform: scale(1) translateY(0); }
+}
+
+/* NEW: Stem pulse animation */
+@keyframes stemPulse {
+    0%, 100% { box-shadow: 0 0 1vmin var(--fl-light-glow); }
+    50% { box-shadow: 0 0 2vmin var(--fl-light-glow); }
+}
+/* --- END MOTION KEYFRAMES --- */
+
+body {
+    min-height: 100vh;
+    background-color: var(--dark-color);
+    overflow-x: hidden;
+    perspective: 1000px;
+    animation: flowerColorChange 40s linear infinite;
+    position: relative;
+    display: block;
+}
+
+/* --- GRASS/GROUND --- */
+.ground-fixed-container {
+    position: fixed;
+    bottom: 0; left: 0;
+    width: 100%; height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 5;
+}
+
+.grass {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 35vh;
+    overflow: visible;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.grass::before {
+    content: "";
+    position: absolute;
+    bottom: -8vh; left: -5%;
+    width: 110%; height: 30vh;
+    background: radial-gradient(ellipse at center, rgba(16,96,80,0.8) 0%, rgba(0,0,0,1) 80%);
+    border-radius: 50% 50% 0 0;
+    box-shadow: 0 0 60px var(--grass-glow);
+    filter: blur(1.2vmin);
+    z-index: 0;
+}
+
+.grass .blade {
+    position: absolute;
+    bottom: 0;
+    width: 3px;
+    border-radius: 50% 50% 0 0;
+    background: linear-gradient(to top, var(--grass-base-color), var(--grass-glow) 80%);
+    box-shadow: 0 0 6px var(--grass-glow), 0 0 10px var(--grass-glow);
+    transform-origin: bottom center;
+    animation: sway 3s infinite ease-in-out;
+    filter: blur(0.3px);
+    opacity: 0.9;
+    z-index: 1;
+}
+
+/* --- FLOWER REFINEMENT --- */
+.flowers {
+    position: absolute;
+    bottom: 15vh;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 8vmin;
+    z-index: 7;
+    filter: drop-shadow(0 0 0.5vmin var(--fl-light-glow));
+}
+
+.flower {
+    position: relative;
+    width: 14vmin;
+    height: 36vmin;
+    transform-origin: bottom center;
+    animation: bloom 2.5s ease forwards, swayFlower 10s infinite ease-in-out 2.5s;
+    filter: drop-shadow(0 0 1vmin var(--fl-light-glow));
+}
+
+/* Stem */
+.flower__line {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0.7vmin;
+    height: 28vmin;
+    background: linear-gradient(to top, var(--fl-stem-base), var(--fl-stem-tip));
+    border-radius: 1vmin;
+    /* Added pulsing animation */
+    animation: stemPulse 5s ease-in-out infinite; 
+}
+
+/* Side leaves */
+.flower__stem-leafs {
+    position: absolute;
+    bottom: 2vmin;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 30vmin;
+}
+.stem-leaf {
+    position: absolute;
+    width: 5vmin;
+    height: 8vmin;
+    background: linear-gradient(to bottom right, var(--fl-stem-tip) 30%, var(--fl-stem-base) 90%);
+    border-radius: 0 80% 0 80%;
+    opacity: 0.9;
+    box-shadow: 0 0 1vmin var(--fl-stem-leaf-shadow);
+}
+.stem-leaf--1 { left: 20%; bottom: 12vmin; transform: rotate(-35deg); }
+.stem-leaf--2 { right: 20%; bottom: 18vmin; transform: rotate(35deg) scaleX(-1); }
+
+/* Petals */
+.flower__leafs {
+    position: absolute;
+    bottom: 29vmin;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 8vmin;
+    height: 8vmin;
+    filter: drop-shadow(0 0 0.6vmin var(--fl-light-glow));
+}
+.flower__leaf {
+    position: absolute;
+    width: 8vmin;
+    height: 6vmin;
+    border-radius: 50% 50% 45% 45%;
+    background: linear-gradient(to bottom, var(--fl-petal-blue), var(--fl-petal-white) 90%);
+    box-shadow: inset 0 -0.2vmin 0.3vmin rgba(255,255,255,0.5);
+}
+.flower__leaf--1 { transform: rotate(-45deg) translate(-1.2vmin, -0.3vmin); }
+.flower__leaf--2 { transform: rotate(45deg) translate(1.2vmin, -0.3vmin); }
+.flower__leaf--3 { transform: rotate(135deg) translate(-1.2vmin, 0.3vmin); }
+.flower__leaf--4 { transform: rotate(-135deg) translate(1.2vmin, 0.3vmin); }
+
+/* Center */
+.flower__leafs::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2.4vmin;
+    height: 2.4vmin;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fffca1 25%, #ffd84d 70%, #ffbe00 100%);
+    box-shadow: 0 0 0.8vmin #fffca1, 0 0 2vmin #ffd84d;
+    z-index: 2;
+}
+
+/* --- Leaves on ground --- */
+.leaves {
+    position: absolute;
+    bottom: 8vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 6;
+    display: flex;
+    gap: 1vmin;
+    filter: drop-shadow(0 0 1vmin var(--fl-stem-leaf-shadow));
+}
+
+.leaf {
+    position: relative;
+    width: 15vmin;
+    height: 10vmin;
+    background: linear-gradient(to right, var(--fl-stem-base) 40%, var(--fl-stem-tip) 90%);
+    border-radius: 40% 60% 50% 50% / 80% 80% 20% 20%;
+    transform-origin: bottom center;
+    opacity: 0.9;
+}
+.leaf--left { transform: rotate(-20deg) translateX(-5vmin) scaleX(0.8); }
+.leaf--right { transform: rotate(20deg) translateX(5vmin) scaleX(0.8); }
+
+/* 💌 Letter + song */
+.content-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; min-height: 100vh;
+    z-index: 10;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+}
+.letter-placement-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 75vh;
+}
+.song-player-container {
+    pointer-events: auto;
+    width: 70%;
+    max-width: 600px;
+    margin-bottom: 10px;
+    z-index: 15;
+    padding: 8px;
+    background-color: rgba(20,20,20,0.7);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 0 15px rgba(0,0,0,0.6);
+}
+.song-player-container iframe {
+    width: 100%;
+    height: 80px;
+    border: none;
+    display: block;
+}
+.letter-box {
+    width: 70%;
+    max-width: 600px;
+    padding: 25px;
+    background-color: rgba(20,20,20,0.9);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+    color: #fff;
+    pointer-events: auto;
+    max-height: 70vh;
+    overflow-y: auto;
+    text-align: center;
+    z-index: 15;
+}
+.letter-box p {
+    font-family: 'Arial', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    white-space: pre-wrap;
+    text-shadow: 0 0 8px var(--text-glow-color), 0 0 16px var(--text-glow-color);
+    color: #ffecec;
+}
+</style>
 </head>
-<body class="not-loaded">
-  <div class="night"></div>
-
-  <!-- 🌸 Flower animations -->
-  <div class="flowers">
-    <div class="flower flower--1">
-      <div class="flower__leafs flower__leafs--1">
-        <div class="flower__leaf flower__leaf--1"></div>
-        <div class="flower__leaf flower__leaf--2"></div>
-        <div class="flower__leaf flower__leaf--3"></div>
-        <div class="flower__leaf flower__leaf--4"></div>
-        <div class="flower__white-circle"></div>
-
-        <div class="flower__light flower__light--1"></div>
-        <div class="flower__light flower__light--2"></div>
-        <div class="flower__light flower__light--3"></div>
-        <div class="flower__light flower__light--4"></div>
-        <div class="flower__light flower__light--5"></div>
-        <div class="flower__light flower__light--6"></div>
-        <div class="flower__light flower__light--7"></div>
-        <div class="flower__light flower__light--8"></div>
-      </div>
-      <div class="flower__line">
-        <div class="flower__line__leaf flower__line__leaf--1"></div>
-        <div class="flower__line__leaf flower__line__leaf--2"></div>
-        <div class="flower__line__leaf flower__line__leaf--3"></div>
-        <div class="flower__line__leaf flower__line__leaf--4"></div>
-        <div class="flower__line__leaf flower__line__leaf--5"></div>
-        <div class="flower__line__leaf flower__line__leaf--6"></div>
-      </div>
+<body>
+<div class="ground-fixed-container">
+    <div class="grass"></div>
+    <div class="flowers">
+        <div class="flower">
+            <div class="flower__line"></div>
+            <div class="flower__stem-leafs">
+                <div class="stem-leaf stem-leaf--1"></div>
+                <div class="stem-leaf stem-leaf--2"></div>
+            </div>
+            <div class="flower__leafs">
+                <div class="flower__leaf flower__leaf--1"></div>
+                <div class="flower__leaf flower__leaf--2"></div>
+                <div class="flower__leaf flower__leaf--3"></div>
+                <div class="flower__leaf flower__leaf--4"></div>
+            </div>
+        </div>
+        <div class="flower">
+            <div class="flower__line"></div>
+            <div class="flower__stem-leafs">
+                <div class="stem-leaf stem-leaf--1"></div>
+                <div class="stem-leaf stem-leaf--2"></div>
+            </div>
+            <div class="flower__leafs">
+                <div class="flower__leaf flower__leaf--1"></div>
+                <div class="flower__leaf flower__leaf--2"></div>
+                <div class="flower__leaf flower__leaf--3"></div>
+                <div class="flower__leaf flower__leaf--4"></div>
+            </div>
+        </div>
+        <div class="flower">
+            <div class="flower__line"></div>
+            <div class="flower__stem-leafs">
+                <div class="stem-leaf stem-leaf--1"></div>
+                <div class="stem-leaf stem-leaf--2"></div>
+            </div>
+            <div class="flower__leafs">
+                <div class="flower__leaf flower__leaf--1"></div>
+                <div class="flower__leaf flower__leaf--2"></div>
+                <div class="flower__leaf flower__leaf--3"></div>
+                <div class="flower__leaf flower__leaf--4"></div>
+            </div>
+        </div>
     </div>
-
-    <div class="flower flower--2">
-      <div class="flower__leafs flower__leafs--2">
-        <div class="flower__leaf flower__leaf--1"></div>
-        <div class="flower__leaf flower__leaf--2"></div>
-        <div class="flower__leaf flower__leaf--3"></div>
-        <div class="flower__leaf flower__leaf--4"></div>
-        <div class="flower__white-circle"></div>
-      </div>
-      <div class="flower__line">
-        <div class="flower__line__leaf flower__line__leaf--1"></div>
-        <div class="flower__line__leaf flower__line__leaf--2"></div>
-        <div class="flower__line__leaf flower__line__leaf--3"></div>
-        <div class="flower__line__leaf flower__line__leaf--4"></div>
-      </div>
+    <div class="leaves">
+        <div class="leaf leaf--left"></div>
+        <div class="leaf leaf--right"></div>
     </div>
+</div>
+<div class="content-overlay">
+    <div class="letter-placement-wrapper">
+        <div class="song-player-container">
+            <iframe scrolling="no" frameborder="no" allow="autoplay"
+            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1258607149&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false"></iframe>
+        </div>
+        <div class="letter-box">
+            <p>Baby ko, happy anniversary 💞<br>
+            This year wasn’t easy — we faced challenges, misunderstandings, and moments that tested us.<br>
+            But through it all, we still chose each other. Life may be hard sometimes, but with you, every day feels lighter, every struggle feels worth it.<br>
+            You make even the toughest times feel a little softer, a little warmer.<br><br>
 
-    <div class="flower flower--3">
-      <div class="flower__leafs flower__leafs--3">
-        <div class="flower__leaf flower__leaf--1"></div>
-        <div class="flower__leaf flower__leaf--2"></div>
-        <div class="flower__leaf flower__leaf--3"></div>
-        <div class="flower__leaf flower__leaf--4"></div>
-        <div class="flower__white-circle"></div>
-      </div>
-      <div class="flower__line">
-        <div class="flower__line__leaf flower__line__leaf--1"></div>
-        <div class="flower__line__leaf flower__line__leaf--2"></div>
-        <div class="flower__line__leaf flower__line__leaf--3"></div>
-        <div class="flower__line__leaf flower__line__leaf--4"></div>
-      </div>
+            Thank you for growing with me, for staying, for understanding me even when I fall short.<br>
+            I wish we continue to grow — not just as a couple, but as two people who never stop choosing love no matter what.<br>
+            Whatever comes our way, I know we can handle it together.<br><br>
+
+            You’re my comfort, my strength, and my forever home.<br>
+            I love you endlessly, my baby. 🌸</p>
+        </div>
     </div>
-  </div>
-
-  <!-- 💌 Message -->
-  <div class="content">
-    <div class="message">
-      Lately, things have been really hectic — juggling school, work, and everything in between.  
-      I’ve been trying to keep up, doing my best to handle it all, but I know I’ve been busy and sometimes end up doing things even during our bebe time.  
-      I’m sorry, my love. I never meant to make you feel unimportant or forgotten. You’re always in my thoughts — even when I’m tired, even when I’m working, even when the day feels too long.  
-      You’re the reason I keep pushing through, the peace that keeps me grounded.  
-      I know how precious our moments together are, and I don’t ever want to lose that warmth we share.  
-      You’ve always been my comfort, my joy, my home — and I hate that my busy days made you feel otherwise.  
-      <br><br>
-      I love you, baby. Truly. I’ll do better, not just in managing my time, but in showing you how much you mean to me.  
-      I want to care for our little garden again — water it with patience, love, and time, until it blooms brighter than before.  
-      No matter how busy life gets, you’ll always be my priority, my peace, and my Ky. 💗
-      <br><br>
-      <span class="ending">I love you endlessly, Ky 💞</span><br>
-      <span class="ending">– Love, Ryuujinflare 💖</span>
-    </div>
-
-    <!-- 🎶 Songs -->
-    <div class="songs">
-      <iframe src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/kagyo/through-the-years-by-kenny-rogers&auto_play=false"></iframe>
-      <iframe src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/ervinsoliven/air-supply-having-you-near-me&auto_play=false"></iframe>
-      <iframe src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/yuriofsrsc/david-pomeranz-exchange-of&auto_play=false"></iframe>
-      <iframe src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/kobama888/i-love-you-celine-dion-cover-by-vanny-vabiola&auto_play=false"></iframe>
-    </div>
-  </div>
-
-  <footer class="footer">Forever Yours 💗</footer>
-  <script src="script.js"></script>
+</div>
+<script>
+const grassContainer = document.querySelector(".grass");
+for (let i = 0; i < 250; i++) {
+    const blade = document.createElement("div");
+    blade.className = "blade";
+    blade.style.left = Math.random() * 100 + "%";
+    blade.style.height = (6 + Math.random() * 18) + "vh";
+    blade.style.animationDuration = (2 + Math.random() * 3) + "s";
+    blade.style.animationDelay = (Math.random() * 3) + "s";
+    blade.style.setProperty("--bend", (Math.random() * 6 + 2) + "deg");
+    grassContainer.appendChild(blade);
+}
+</script>
 </body>
 </html>
-
